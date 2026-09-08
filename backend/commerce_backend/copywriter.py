@@ -4,7 +4,6 @@ import json
 
 import httpx
 
-
 LABELS = {
     "zh": ("适合日常使用", "设计简洁实用", "规格信息清晰", "便于跨境展示", "多场景可用", "这款{title}以实用设计满足日常需求。{spec}"),
     "en": ("Made for everyday use", "Practical, clean design", "Clear product specifications", "Ready for global shoppers", "Useful in multiple settings", "The {title} combines practical design with everyday convenience. {spec}"),

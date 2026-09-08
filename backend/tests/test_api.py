@@ -1,6 +1,5 @@
-from fastapi.testclient import TestClient
-
 from commerce_backend.main import app
+from fastapi.testclient import TestClient
 
 
 def test_zero_key_demo_api_flow():

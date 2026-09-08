@@ -43,9 +43,9 @@ def import_suppliers(session: Session, path: Path) -> int:
         for key in ("minimum_order_quantity",):
             if cleaned.get(key) == "":
                 cleaned[key] = None
-        cleaned.setdefault("data_mode", "imported")
-        cleaned.setdefault("source_label", "用户导入的候选货源")
-        cleaned.setdefault("price_basis", "用户导入价格，需自行核实")
+        cleaned["data_mode"] = "imported"
+        cleaned["source_label"] = "用户导入的课堂模拟候选货源"
+        cleaned["price_basis"] = "用户导入的课堂模拟采购成本，非真实批发报价"
         try:
             validated.append(SupplierData.model_validate(cleaned))
         except ValidationError as exc:

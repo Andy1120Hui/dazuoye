@@ -1,11 +1,9 @@
 from datetime import datetime, timezone
 
 import pytest
-from pydantic import ValidationError
-
 from commerce_backend.adapters.ebay import EbayAdapter
 from commerce_backend.schemas import ProductData
-
+from pydantic import ValidationError
 
 BASE = {
     "id": "p", "source": "demo", "title": "Item", "price": 10, "currency": "USD",

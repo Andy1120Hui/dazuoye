@@ -16,11 +16,14 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8,<9"]
+dev = ["pytest>=8,<9", "ruff>=0.16,<1"]
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["commerce_backend*"]
+
+[tool.setuptools.package-data]
+commerce_backend = ["prompts/*.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -4,7 +4,6 @@ import re
 import unicodedata
 from dataclasses import dataclass
 
-
 CONCEPTS = {
     "storage": ["storage", "organizer", "收纳", "整理"],
     "box": ["box", "bin", "盒", "箱"],

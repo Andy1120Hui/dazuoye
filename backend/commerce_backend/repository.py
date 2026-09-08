@@ -16,7 +16,7 @@ def _read_json(path: Path) -> list[dict]:
     with path.open(encoding="utf-8-sig") as handle:
         value = json.load(handle)
     if not isinstance(value, list):
-        raise ValueError(f"{path} must contain a JSON array")
+        raise TypeError(f"{path} must contain a JSON array")
     return value
 
 

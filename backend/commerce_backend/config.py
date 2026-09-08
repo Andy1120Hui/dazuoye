@@ -8,7 +8,6 @@ from typing import Annotated
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
-
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -30,9 +29,6 @@ class Settings(BaseSettings):
     ebay_client_id: str | None = None
     ebay_client_secret: str | None = None
     ebay_category_ids_json: str = "{}"
-    taobao_app_key: str | None = None
-    taobao_app_secret: str | None = None
-    taobao_adzone_id: str | None = None
     llm_base_url: str | None = None
     llm_api_key: str | None = None
     llm_model: str | None = None

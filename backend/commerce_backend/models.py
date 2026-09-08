@@ -3,7 +3,15 @@ from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
 
-from sqlalchemy import Float, ForeignKey, Integer, Numeric, String, Text, UniqueConstraint
+from sqlalchemy import (
+    Float,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+    Text,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import TypeDecorator
 
@@ -63,7 +71,7 @@ class Supplier(Base):
     category: Mapped[str] = mapped_column(String(64), index=True)
     data_mode: Mapped[str] = mapped_column(String(16), default="demo")
     source_label: Mapped[str] = mapped_column(String(200))
-    price_basis: Mapped[str] = mapped_column(String(120), default="零售采购参考价")
+    price_basis: Mapped[str] = mapped_column(String(120), default="课堂模拟采购成本，非真实批发报价")
     collected_at: Mapped[datetime] = mapped_column(TZDateTime())
 
 

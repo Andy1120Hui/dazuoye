@@ -1,13 +1,7 @@
 import asyncio
 
 import httpx
-
 from commerce_backend.adapters.ebay import EbayAdapter
-from commerce_backend.adapters.taobao import top_sign
-
-
-def test_taobao_signature_fixed_vector():
-    assert top_sign({"b": "2", "a": "1"}, "secret") == "EF16F26C937CF52AE6F85DF2FD08B24A"
 
 
 def test_ebay_search_cache_avoids_duplicate_upstream_request():

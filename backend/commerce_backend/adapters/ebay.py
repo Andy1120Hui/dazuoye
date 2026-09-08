@@ -12,7 +12,6 @@ import httpx
 
 from ..schemas import ProductData
 
-
 MARKET_IDS = {"US": "EBAY_US", "GB": "EBAY_GB", "DE": "EBAY_DE"}
 CATEGORY_KEYWORDS = {
     "home_storage": "home storage organizer",

@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-import math
 from datetime import datetime
 from decimal import Decimal
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
-
 
 CATEGORIES = {"home_storage", "pet_supplies", "kitchen", "outdoor"}
 MARKETS = {"US", "GB", "DE"}
@@ -69,9 +67,9 @@ class SupplierData(BaseModel):
     match_score: float | None = Field(default=None, ge=0, le=1)
     match_reason: str | None = None
     category: str
-    data_mode: Literal["demo", "live", "imported"] = "demo"
+    data_mode: Literal["demo", "imported"] = "demo"
     source_label: str
-    price_basis: str = "零售采购参考价"
+    price_basis: str = "课堂模拟采购成本，非真实批发报价"
     collected_at: datetime
 
     @field_validator("purchase_price")
@@ -98,10 +96,13 @@ class SupplierData(BaseModel):
 
 
 class CostAssumptions(BaseModel):
-    exchange_rates_to_cny: dict[str, Decimal] = {"USD": Decimal("7.2"), "CNY": Decimal("1")}
-    shipping_cny: Decimal = Field(default=Decimal("25"), ge=0)
+    exchange_rates_to_cny: dict[str, Decimal] = {"USD": Decimal("7.2"), "CNY": Decimal(1)}
+    purchase_price_cny: Decimal | None = Field(default=None, gt=0)
+    purchase_price_overrides_cny: dict[str, Decimal] = Field(default_factory=dict)
+    shipping_cny: Decimal = Field(default=Decimal(25), ge=0)
     platform_fee_rate: Decimal = Field(default=Decimal("0.15"), ge=0, le=1)
-    other_cost_cny: Decimal = Field(default=Decimal("0"), ge=0)
+    other_cost_cny: Decimal = Field(default=Decimal(0), ge=0)
+    target_profit_rate: Decimal = Field(default=Decimal("0.25"), ge=0, le=1)
 
     @field_validator("exchange_rates_to_cny")
     @classmethod
@@ -109,8 +110,15 @@ class CostAssumptions(BaseModel):
         normalized = {key.upper(): rate for key, rate in value.items()}
         if any((not rate.is_finite()) or rate <= 0 for rate in normalized.values()):
             raise ValueError("exchange rates must be finite positive numbers")
-        normalized.setdefault("CNY", Decimal("1"))
+        normalized.setdefault("CNY", Decimal(1))
         return normalized
+
+    @field_validator("purchase_price_overrides_cny")
+    @classmethod
+    def valid_purchase_overrides(cls, value: dict[str, Decimal]) -> dict[str, Decimal]:
+        if any((not price.is_finite()) or price <= 0 for price in value.values()):
+            raise ValueError("purchase price overrides must be finite positive numbers")
+        return value
 
 
 class RecommendationRequest(BaseModel):
@@ -122,6 +130,15 @@ class CopyRequest(BaseModel):
     product_id: str
     target_language: Literal["zh", "en", "de", "es"] = "en"
     style: Literal["concise", "professional", "lively"] = "professional"
+
+
+class AgentRecommendationRequest(BaseModel):
+    query: str = Field(min_length=2, max_length=500)
+    max_results: int = Field(default=5, ge=2, le=10)
+    cost_assumptions: CostAssumptions = Field(default_factory=CostAssumptions)
+    generate_copy_for_top: bool = False
+    target_language: Literal["zh", "en", "de", "es"] = "zh"
+    copy_style: Literal["concise", "professional", "lively"] = "professional"
 
 
 class Envelope(BaseModel):

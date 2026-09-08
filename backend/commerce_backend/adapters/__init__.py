@@ -1,0 +1,1 @@
+"""Official upstream platform adapters."""
